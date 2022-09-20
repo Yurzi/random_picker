@@ -110,6 +110,42 @@ void MainWindow::slot_on_read_data_clicked() {
 }
 
 void MainWindow::slot_on_predict_clicked() {
+    std::vector<int64_t> res = this->analyzar->predict();
+    std::cout << "[MainWindow:slot_on_predict_clicked] clicked and res.size=" << res.size() << std::endl;
+    // 简单输出
+    std::stringstream ss;
+    for(auto i : res) {
+        ss << i << " ";
+    }
+    ss << std::endl;
+    std::string display = ss.str();
+    
+    // 找到最大组别
+    int64_t max_group_index = 1;
+    for (auto i : res) {
+        max_group_index = i > max_group_index ? i : max_group_index;
+    }
+
+    ss.clear();
+    for (int index = 1; index <= max_group_index; ++index) {
+        ss << "第" << index << "组: {";
+        std::vector<int64_t> temp;
+        for (int64_t person = 0; person < res.size(); ++person) {
+            if (res[person] == index) {
+                temp.push_back(person + 1);
+            }
+        }
+
+        for (int i = 0; i < temp.size(); ++i) {
+            ss << temp[i] << (i < temp.size() - 1 ? "," : " ");
+        }
+        ss << "}" <<std::endl;
+    }
+
+    display += ss.str();
+
+    ui->output_predict_res->setText(QString::fromStdString(display));
+
 }
 
 }   // namespace yurzi
