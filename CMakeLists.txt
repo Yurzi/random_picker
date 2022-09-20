@@ -46,7 +46,7 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets)
 add_executable(${PROJECT_NAME} ${SRC_LIST})
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Widgets)
 target_link_libraries(${PROJECT_NAME} PRIVATE Eigen3::Eigen)
-#set_target_properties(${PROJECT_NAME} PROPERTIES
-#    WIN32_EXECUTABLE ON
-#    )
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    WIN32_EXECUTABLE ON
+    )
 

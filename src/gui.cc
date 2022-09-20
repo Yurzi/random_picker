@@ -3,6 +3,7 @@
 
 #include <sstream>
 #include <exception>
+#include <iomanip>
 
 #include "gui.h"
 
@@ -105,6 +106,11 @@ void MainWindow::slot_on_read_data_clicked() {
 
     ui->btn_predict->setText("初始化...");
     this->analyzar->init();
+    double evaluate_res = this->analyzar->evaluate();
+    std::stringstream ss;
+    ss << std::setprecision(2) << evaluate_res;
+    
+    ui->output_evaluate->setText(QString::fromStdString(ss.str()));
     ui->btn_predict->setText("预测");
     ui->btn_predict->setEnabled(true);
 }
@@ -118,7 +124,6 @@ void MainWindow::slot_on_predict_clicked() {
         ss << i << " ";
     }
     ss << std::endl;
-    std::string display = ss.str();
     
     // 找到最大组别
     int64_t max_group_index = 1;
@@ -126,7 +131,6 @@ void MainWindow::slot_on_predict_clicked() {
         max_group_index = i > max_group_index ? i : max_group_index;
     }
 
-    ss.clear();
     for (int index = 1; index <= max_group_index; ++index) {
         ss << "第" << index << "组: {";
         std::vector<int64_t> temp;
@@ -137,15 +141,12 @@ void MainWindow::slot_on_predict_clicked() {
         }
 
         for (int i = 0; i < temp.size(); ++i) {
-            ss << temp[i] << (i < temp.size() - 1 ? "," : " ");
+            ss << temp[i] << (i < temp.size() - 1 ? "," : "");
         }
         ss << "}" <<std::endl;
     }
 
-    display += ss.str();
-
-    ui->output_predict_res->setText(QString::fromStdString(display));
-
+    ui->output_predict_res->setText(QString::fromStdString(ss.str()));
 }
 
 }   // namespace yurzi

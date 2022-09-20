@@ -30,6 +30,7 @@ public:
         std::getline(m_fd, line);
         if(m_fd.eof()) {
             status = false;
+            m_fd.close();
             return {};
         }
         std::stringstream ss;
@@ -90,6 +91,39 @@ public:
         std::cout << "[Analyzar:init] cout_Matrix: \n[" << *count_Matrix << "]" << std::endl;
     }
 
+    double evaluate() {
+        Eigen::MatrixXi &matrix = *count_Matrix;
+        // 使用线性归一化
+        // 1. 计算最小方差
+        double min_vari = 0;
+        // 2. 最大方差
+        double total_count_per_person = 0;
+        for (int64_t index = 0; index < matrix.cols(); ++index) {
+            total_count_per_person += matrix(0, index); 
+        }
+
+        double average_cout_per_person = total_count_per_person / matrix.cols();
+        double square_sum = std::pow(total_count_per_person - average_cout_per_person, 2);
+        for (int64_t index = 1; index < matrix.cols(); ++index) {
+           square_sum += pow(average_cout_per_person - 0, 2);
+        }
+
+        double max_vari = (square_sum / matrix.cols()) * matrix.rows();
+
+        // 3. 计算方差
+        double sum_vari = 0;
+        for (int64_t person = 0; person < matrix.rows(); ++person) {
+            double temp = 0;
+            for (int64_t index = 0; index < matrix.cols(); ++index) {
+                temp += pow(matrix(person, index) - average_cout_per_person, 2);
+            }
+
+            sum_vari += temp / matrix.cols();
+        }
+
+        double evaluate_res = 1 - (sum_vari / max_vari);
+        return evaluate_res;
+    }
 
     std::vector<int64_t> predict() {
         // 找到每个人中被分到组最小的index;

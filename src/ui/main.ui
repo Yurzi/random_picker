@@ -19,7 +19,7 @@
   <property name="windowTitle">
    <string>Random Picker</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -94,6 +94,23 @@
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <layout class="QGridLayout" name="gridLayout_2">
+        <item row="2" column="1">
+         <widget class="QLabel" name="output_evaluate">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="btn_predict">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>预测</string>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="0">
          <widget class="QLabel" name="label_3">
           <property name="text">
@@ -114,17 +131,21 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QPushButton" name="btn_predict">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_6">
           <property name="text">
-           <string>预测</string>
+           <string>评估得分[0-1]：</string>
           </property>
          </widget>
         </item>
        </layout>
+      </item>
+      <item>
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QLabel" name="label_5">
